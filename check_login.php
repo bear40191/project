@@ -14,7 +14,6 @@
   $username = $_POST['username'];
   $password = $_POST['password'];
 
-<<<<<<< HEAD
   $sql = "SELECT * FROM user WHERE username='$username' AND password='$password'";
   $result = $con->query($sql);
   $num = $result->num_rows;
@@ -24,20 +23,10 @@
             alert('username or password invalid');
             location.href='login.php';
           </script>";
-=======
-  $alert_message = '';
-  $alert_icon = '';
-  $redirect_page = '';
-
-  if (empty($username) || empty($password)) {
-    $alert_message = 'กรุณากรอก username หรือ password';
-    $alert_icon = 'warning';
-    $redirect_page = 'login.php';
->>>>>>> 02ee85926e41722511b5d0d81a9393120ff6748e
   } else {
     // Note: This SQL query is vulnerable to injection.
     // Using prepared statements is recommended for production environments.
-    $sql = "SELECT * FROM narak WHERE username='$username' AND password='$password'";
+    $sql = "SELECT * FROM user WHERE username='$username' AND password='$password'";
     $result = $con->query($sql);
     $row = mysqli_fetch_array($result);
 

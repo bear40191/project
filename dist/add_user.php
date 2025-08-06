@@ -1,5 +1,4 @@
 <?php
-<<<<<<< HEAD
 require '../connect.php';
 if (isset($_POST['save'])) {
   $username = $_POST['username'];
@@ -21,34 +20,11 @@ if (isset($_POST['save'])) {
         echo "<script>window.lacation.href='index.php?page=user'</script>";
       } else {
         echo "<script>alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');history.back();</script>";
-=======
-    require '../connect.php';
-    if (isset($_POST['submit'])) {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $fullname = $_POST['fullname'];
-        $phone = $_POST['phone'];
-        $email = $_POST['email'];
-        if (empty($username) || empty($password) || empty($fullname) || empty($phone) || empty($email)) {
-    echo  "<script>alert('กรุณากรอกข้อมูลให้ครบทุกช่อง');history.back()</script>";
-  } else {
-    $old_data = $con->query("SELECT * FROM narak WHERE username= '$username' ");
-    $old_num = mysqli_num_rows($old_data);
-    if ($old_num == 1) {
-      echo  "<script>alert('username นี้มีคนใช้แล้ว');history.back()</script>";
-    } else {
-      $sql = "INSERT INTO narak VALUES('$username','$password','$fullname','$phone','$email')";
-      $result = $con->query($sql);
-      if (!$result) {
-        echo "<script>alert('บันทึกข้อมูลผิดพลาด');history.back()</script>";
-      } else {
-        echo "<script>window.location.href='index.php?page=user_list';</script>";
->>>>>>> 02ee85926e41722511b5d0d81a9393120ff6748e
       }
     }
   }
 }
-<<<<<<< HEAD
+
 ?>
 
 

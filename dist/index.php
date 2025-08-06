@@ -71,7 +71,6 @@
     <!--end::Sidebar-->
     <!--begin::App Main-->
     <main class="app-main">
-<<<<<<< HEAD
         <?php
         $page = isset($_GET['page']) ? $_GET['page'] : "";
         switch ($page){
@@ -96,33 +95,20 @@
           include 'del_user.php';
           break;
 
-          include 'dashboard.php';
+          case 'product';
+          include 'product.php';
           break;
+
+          case 'edit_pro';
+          include 'edit_pro.php';
+          break;
+
+          case 'add_pro';
+          include 'add_pro.php';
+          break;
+
         }
         ?>
-=======
-      <?php
-      $page = isset($_GET['page']) ? $_GET['page'] : '';
-    switch($page){
-      case 'dashboard':
-        include 'dashboard.php';
-        break;
-        case 'user_list':
-        include 'user.php';
-        break;  
-        case 'add_user':
-        include 'add_user.php';
-        break;
-          case 'edit_user':
-          include 'edit_user.php';
-          break;
-        case 'del_user':
-          include 'del_user.php';
-          break;
-        default:
-    }
-      ?>
->>>>>>> 02ee85926e41722511b5d0d81a9393120ff6748e
     </main>
     <!--end::App Main-->
     <!--begin::Footer-->

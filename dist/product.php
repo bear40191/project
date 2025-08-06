@@ -1,6 +1,6 @@
 <?php
 require '../connect.php';
-$sql = "SELECT * from user";
+$sql = "SELECT * from products";
 $result = $con->query($sql);
 
 ?>
@@ -12,12 +12,12 @@ $result = $con->query($sql);
             <!--begin::Row-->
             <div class="row">
               <div class="col-sm-6">
-                <h3 class="mb-0">users Tables</h3>
+                <h3 class="mb-0">Product Tables</h3>
               </div>
               <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-end">
                   <li class="breadcrumb-item"><a href="#">Home</a></li>
-                  <li class="breadcrumb-item active" aria-current="users_list">Users Tables</li>
+                  <li class="breadcrumb-item active" aria-current="users_list">Product Tables</li>
                 </ol>
               </div>
             </div>
@@ -34,21 +34,23 @@ $result = $con->query($sql);
             <div class="row">
               <div class="col-md-15">
                 <div class="card mb-4">
-                  <div class="card-header bg-primary text-white">
-                    <h3 class="card-title">Users</h3>
+                  <div class="card-header bg-danger text-white">
+                    <h3 class="card-title">Product_list</h3>
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body">
-                    <a href="index.php?page=add_user" class="btn btn-success mb-4"><i class="nav-icon bi bi-people">+Add user</i></a>
+                    <a href="index.php?page=add_pro" class="btn btn-success mb-4"><i class="nav-icon bi bi-people">+Add Product</i></a>
                     <table class="table table-bordered">
                       <thead>
                         <tr>
                             <th>ลำดับที่</th>
-                          <th >Username</th>
-                          <th>fullname</th>
-                          <th>email</th>
-                          <th >Phone</th>
-                          <th>Action</th>
+                            <th>Product_id</th>
+                          <th >Product_Name</th>
+                          <th>Product_Price</th>
+                          <th>Product_Amound</th>
+                          <th>Product_Status</th>
+                          <th>แก้ไขข้อมูล</th>
+                          
                         </tr>
                       </thead>  
                       <tbody>
@@ -60,18 +62,19 @@ $result = $con->query($sql);
                         ?>
                         <tr class="align-middle">
                           <td><?php echo $i ?></td>
-                          <td><?php echo $row['Username']?></td>
-                          <td><?php echo $row['fullname']?></td>
-                            <td><?php echo $row['email']?></td>
-                            <td><?php echo $row['phone']?></td>
+                          <td><?php echo $row['pro_id']?></td>
+                          <td><?php echo $row['pro_name']?></td>
+                          <td><?php echo $row['pro_price']?></td>
+                            <td><?php echo $row['pro_amount']?></td>
+                            <td><?php echo $row['pro_status']?></td>
                             <td>
                               <!-- ใส่ปุ่มแก้ไขข้อมูล -->
-                              <a href="index.php?page=edit_user&username=<?php 
-                              echo $row['Username']?>" class="btn btn-info">
+                              <a href="index.php?page=edit_pro&pro_id=<?php 
+                              echo $row['pro_id']?>" class="btn btn-info">
                                 <i class="bi bi-pencil-square"></i></a>
                                 <!-- ใส่ปุ่มลบข้อมูล -->
-                                <a href="index.php?page=del_user&username=<?php 
-                              echo $row['Username']?>" class="btn btn-danger"
+                                <a href="index.php?page=del_pro&username=<?php 
+                              echo $row['pro_id']?>" class="btn btn-danger"
                               onclick="return confirm('มึงแน่ใจหรอ')">
                                   <i class="bi bi-trash-fill"></i></a>
                             </td>

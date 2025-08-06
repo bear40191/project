@@ -5,7 +5,7 @@
   <!--begin::Copyright-->
   <strong>
     Copyright &copy; 2014-2025&nbsp;
-    <a href="#" class="text-decoration-none">Suparoek Yatan</a>.
+    <a href="#" class="text-decoration-none">Phuriwat Limwattanaroj</a>.
   </strong>
   All rights reserved.
   <!--end::Copyright-->
