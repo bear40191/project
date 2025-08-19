@@ -1,10 +1,9 @@
-
 <?php
 $username = $_GET['username'];
 require '../connect.php';
 //นำข้อมูลเดิมมาจาก Database
 $sql = "SELECT * FROM user WHERE username='$username'";
-$result = mysqli_query($con, $sql); // แบบ procedural
+$result = $con->query($sql);
 $row = mysqli_fetch_array($result);
 
 if(isset($_POST['save'])) {
@@ -12,19 +11,22 @@ if(isset($_POST['save'])) {
   $fullname = $_POST['fullname'];
   $phone = $_POST['phone'];
   $email = $_POST['email'];
-  $sql = "UPDATE user SET password= ' $password',fullname='$fullname',phone='$phone',email='$email'
-  WHERE uesrname = '$username'";
-   $result = mysqli_query($con, $sql);
-   
-  if (empty($password) || empty($fullname) || empty($phone) || empty($email)) {
-    echo "<script>alert('กรุณากรอกข้อมูลให้ครบถ้วน');history.back();</script>";
+
+  // เช็คไฟล์ภาพใหม่ ถ้าว่างใช้รูปเก่า
+  if (!empty($_FILES['user_pic']['name'])) {
+    $filename = $_FILES['user_pic']['name'];
+    // อัปโหลดภาพใหม่
+    move_uploaded_file($_FILES['user_pic']['tmp_name'], 'assets/user_img/' . $filename);
   } else {
-    $sql_update = "UPDATE user SET password='$password', fullname='$fullname', phone='$phone', email='$email' WHERE username='$username'";
-    if ($con->query($sql_update)) {
-      echo "<script>alert('ข้อมูลผู้ใช้ถูกแก้ไขเรียบร้อยแล้ว ✅');window.location.href='index.php?page=users_list'</script>";
-    } else {
-      echo "<script>alert('เกิดข้อผิดพลาดในการแก้ไขข้อมูล ❌');history.back();</script>";
-    }
+    // ใช้รูปเก่าจากฐานข้อมูล
+    $filename = $row['image'];
+  }
+
+  $sql = "UPDATE user SET password='$password', fullname='$fullname', phone='$phone', email='$email', image='$filename' WHERE username='$username'";
+  if($con->query($sql)) {
+    echo "<script>alert('User information updated successfully ✅'); window.location.href='index.php?page=users_list';</script>";
+  } else {
+    echo "<script>alert('Error updating user information ❌'); history.back();</script>";
   }
 }
 
@@ -68,7 +70,7 @@ if(isset($_POST['save'])) {
           </div>
           <!--end::Header-->
           <!--begin::Form-->
-          <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
+          <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
             <!--begin::Body-->
             <div class="card-body">
               <div class="mb-3">
@@ -88,7 +90,7 @@ if(isset($_POST['save'])) {
                 <label for="exampleInputEmail1" class="form-label">ชื่อ-นามสกุล ✒</label>
                 <input type="text" name="fullname" class="form-control" id="exampleInputPassword1"
                   value="<?php echo $row['fullname'] ?>" />
-              </div>
+              </div>a
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">เบอร์โทรศัพท์ 📞</label>
                 <input type="phone" name="phone" class="form-control" id="exampleInputPassword1"
@@ -99,6 +101,16 @@ if(isset($_POST['save'])) {
                 <input type="email" name="email" class="form-control" id="exampleInputPassword1"
                   value="<?php echo $row['email'] ?>" />
               </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Old Image 🖼</label><br>
+                <img src="assets/user_img/<?php echo $row['image'] ?>" width="100" class="img-thumbnail mb-3">
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">New Image 🖼</label>
+                <input type="file" name="user_pic" class="form-control"/>
+              </div>
+
+
             </div>
             <!--end::Body-->
             <!--begin::Footer-->
@@ -117,5 +129,3 @@ if(isset($_POST['save'])) {
   <!--end::Container-->
 </div>
 <!--end::App Content-->
-
-    

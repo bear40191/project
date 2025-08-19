@@ -107,6 +107,10 @@
           include 'add_pro.php';
           break;
 
+          case 'del_pro';
+          include 'del_pro.php';
+          break;
+
         }
         ?>
     </main>

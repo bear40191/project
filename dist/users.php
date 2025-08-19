@@ -39,7 +39,24 @@ $result = $con->query($sql);
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body">
-                    <a href="index.php?page=add_user" class="btn btn-success mb-4"><i class="nav-icon bi bi-people">+Add user</i></a>
+            <div class="row align-items-center">
+              <div class="col-md-10">
+                <form action="user_csv.php" method="post" enctype="multipart/form-data" class="row align-items-center">
+                  <label for="filecsv" class="col-md-4 col-form-label">UPLOAD YOUR FILE</label>
+                  <div class="col-md-6">
+                    <input type="file" name="filecsv" id="filecsv" class="form-control" required>
+                  </div>
+                  <div class="col-md-2">
+                    <button type="submit" class="btn btn-success w-100">UPLOAD</button>
+                  </div>
+                </form>
+              </div>
+              <div class="col-md-2 text-end">
+                <a href="index.php?page=add_user" class="btn btn-success"> ADD USER</a>
+              </div>
+            </div>
+          </div>
+
                     <table class="table table-bordered">
                       <thead>
                         <tr>
@@ -48,7 +65,9 @@ $result = $con->query($sql);
                           <th>fullname</th>
                           <th>email</th>
                           <th >Phone</th>
+                          <th>image</th>
                           <th>Action</th>
+                          
                         </tr>
                       </thead>  
                       <tbody>
@@ -64,6 +83,7 @@ $result = $con->query($sql);
                           <td><?php echo $row['fullname']?></td>
                             <td><?php echo $row['email']?></td>
                             <td><?php echo $row['phone']?></td>
+                            <td><img src="assets/user_img/<?php echo $row ['image']?>" width="100"></td>
                             <td>
                               <!-- ใส่ปุ่มแก้ไขข้อมูล -->
                               <a href="index.php?page=edit_user&username=<?php 

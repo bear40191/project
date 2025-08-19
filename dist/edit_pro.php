@@ -1,45 +1,56 @@
 <?php
-$pro_id = $_GET['pro_id'];
 require '../connect.php';
-//นำข้อมูลเดิมมาจาก Database
-$sql = "SELECT * FROM products WHERE pro_id='$pro_id'";
-$result = mysqli_query($con, $sql); // แบบ procedural
-$row = mysqli_fetch_array($result);
 
+// รับค่า pro_id จาก URL เพื่อใช้ดึงข้อมูล
+$pro_id = $_GET['pro_id'] ?? '';
+
+// ตรวจสอบว่า pro_id ถูกส่งมาหรือไม่
+if (!empty($pro_id)) {
+  $sql = "SELECT * FROM products WHERE pro_id = '$pro_id'";
+  $result = $con->query($sql);
+  $row = mysqli_fetch_array($result);
+}
+
+// เมื่อมีการกดปุ่มบันทึก
 if (isset($_POST['save'])) {
+  $pro_id     = $_POST['pro_id'];
+  $pro_name   = $_POST['pro_name'];
+  $pro_price  = $_POST['pro_price'];
+  $pro_amount = $_POST['pro_amount'];
+  $pro_status = $_POST['pro_status'];
 
-    // รับค่าจากฟอร์มและป้องกัน SQL Injection
-    $pro_id     = mysqli_real_escape_string($con, $_POST['pro_id']);
-    $pro_name   = mysqli_real_escape_string($con, $_POST['pro_name']);
-    $pro_price  = mysqli_real_escape_string($con, $_POST['pro_price']);
-    $pro_amount = mysqli_real_escape_string($con, $_POST['pro_amount']);
-    
-    // ตรวจสอบการรับค่า pro_status ให้ถูกต้อง
-    $pro_status = isset($_POST['pro_status']) ? mysqli_real_escape_string($con, $_POST['pro_status']) : null;
+  // เช็คไฟล์ภาพใหม่ ถ้าว่างใช้รูปเก่า
+  if (!empty($_FILES['image']['name'])) {
+    $filename = $_FILES['image']['name'];
+    // อัปโหลดภาพใหม่
+    move_uploaded_file($_FILES['image']['tmp_name'], 'assets/pro_img/' . $filename);
+  } else {
+    // ใช้รูปเก่าจากฐานข้อมูล
+    $filename = $row['image'];
+  }
 
-    // --- 3. ตรวจสอบข้อมูล (แก้ไขเงื่อนไข) ---
-    // ตรวจสอบว่าค่าที่จำเป็นไม่ใช่ค่าว่าง และ pro_status ต้องถูกตั้งค่า (ไม่เป็น null)
-    if (empty($pro_id) || empty($pro_name) || $pro_price === '' || $pro_amount === '' || $pro_status === null) {
-        echo "<script>alert('กรุณากรอกข้อมูลให้ครบถ้วน'); history.back();</script>";
+  // ตรวจสอบค่าว่าง
+  if (empty($pro_id) || empty($pro_name) || empty($pro_price) || empty($pro_amount) || empty($pro_status)) {
+    echo "<script>alert('กรุณากรอกข้อมูลให้ครบถ้วน'); history.back();</script>";
+  } else {
+    // อัปเดตข้อมูลสินค้า รวมถึงรูปภาพ
+    $sql = "UPDATE products
+            SET pro_name='$pro_name',
+                pro_price='$pro_price',
+                pro_amount='$pro_amount',
+                pro_status='$pro_status',
+                image='$filename'
+            WHERE pro_id='$pro_id'";
+
+    if ($con->query($sql)) {
+      echo "<script>alert('อัปเดตข้อมูลสินค้าสำเร็จ ✅'); window.location.href='index.php?page=product';</script>";
     } else {
-        // --- 4. สร้างและรันคำสั่ง SQL UPDATE (แก้ไขให้ถูกต้อง) ---
-        $sql_update = "UPDATE products SET 
-                        pro_name = '$pro_name', 
-                        pro_price = '$pro_price', 
-                        pro_amount = '$pro_amount', 
-                        pro_status = '$pro_status'
-                      WHERE pro_id = '$pro_id'"; // << แก้ไข WHERE clause ตรงนี้
-
-        // รันคำสั่ง query เพียงครั้งเดียว
-        if (mysqli_query($con, $sql_update)) {
-            echo "<script>alert('ข้อมูลสินค้าถูกแก้ไขเรียบร้อยแล้ว ✅'); window.location.href='index.php?page=product';</script>";
-        } else {
-            // แสดงข้อผิดพลาดจาก MySQL เพื่อช่วยในการดีบัก
-            echo "<script>alert('เกิดข้อผิดพลาดในการแก้ไขข้อมูล ❌: " . mysqli_error($con) . "'); history.back();</script>";
-        }
+      echo "<script>alert('เกิดข้อผิดพลาดในการอัปเดตข้อมูล ❌'); history.back();</script>";
     }
+  }
 }
 ?>
+
 
 
 <!--begin::App Content Header-->
@@ -79,7 +90,7 @@ if (isset($_POST['save'])) {
                     </div>
                     <!--end::Header-->
                     <!--begin::Form-->
-                    <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
+                    <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
                         <!--begin::Body-->
                         <div class="card-body">
                             <div class="mb-3">
@@ -125,6 +136,10 @@ if (isset($_POST['save'])) {
                                     ไม่มีสินค้าในคลัง
                                 </label>
                             </div>
+                            <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">image</label>
+                        <input type="file" class="form-control" id="exampleInputPassword1" name="image" />
+                      </div>
                         </div>
                         </div>
                         <!--end::Body-->

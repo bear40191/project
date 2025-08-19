@@ -6,6 +6,7 @@ if (isset($_POST['save'])) {
   $pro_price = $_POST['pro_price'];
   $pro_amount = $_POST['pro_amount'];
   $pro_status = $_POST['pro_status'];
+  $filename = $_FILES['image']['name'];
 
   if (empty($pro_id) ||  empty($pro_name) || empty($pro_price) || empty($pro_amount) || empty($pro_status)) {
     echo "<script>alert('กรุณากรอกข้อมูลให้ครบถ้วน');history.back();</script>";
@@ -15,7 +16,8 @@ if (isset($_POST['save'])) {
     if ($exit_username) {
       echo "<script>alert('ชื่อผู้ใช้ซ้ำ กรุณาเปลี่ยนชื่อผู้ใช้');history.back();</script>";
     } else {
-      $sql = "INSERT INTO products (pro_id, pro_name, pro_price, pro_amount,pro_status) VALUES ('$pro_id', '$pro_name', '$pro_price', '$pro_amount', '$pro_status')";
+      move_uploaded_file($_FILES['image']['tmp_name'],'assets/pro_img/'.$filename);
+      $sql = "INSERT INTO products (pro_id, pro_name, pro_price, pro_amount,pro_status,image) VALUES ('$pro_id', '$pro_name', '$pro_price', '$pro_amount', '$pro_status','$filename')";
       if ($con->query($sql)) {
         echo "<script>window.lacation.href='index.php?page=user'</script>";
       } else {
@@ -64,7 +66,7 @@ if (isset($_POST['save'])) {
                   </div>
                   <!--end::Header-->
                   <!--begin::Form-->
-                  <form accept="<?php $_SERVER['PHP_SELF']?>" method="POST">
+                  <form accept="<?php $_SERVER['PHP_SELF']?>" method="POST" enctype="multipart/form-data">
                     <!--begin::Body-->
                     <div class="card-body">
                       <div class="mb-3">
@@ -93,6 +95,11 @@ if (isset($_POST['save'])) {
                       <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">สถานะ</label>
                         <input type="text" class="form-control" id="exampleInputPassword1" name="pro_status" />
+                      </div>
+
+                      <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">image</label>
+                        <input type="file" class="form-control" id="exampleInputPassword1" name="image" />
                       </div>
                 
                     </div>

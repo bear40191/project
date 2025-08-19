@@ -39,7 +39,23 @@ $result = $con->query($sql);
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body">
-                    <a href="index.php?page=add_pro" class="btn btn-success mb-4"><i class="nav-icon bi bi-people">+Add Product</i></a>
+            <div class="row align-items-center">
+              <div class="col-md-10">
+                <form action="pro_csv.php" method="post" enctype="multipart/form-data" class="row align-items-center">
+                  <label for="filecsv" class="col-md-4 col-form-label">UPLOAD YOUR FILE</label>
+                  <div class="col-md-6">
+                    <input type="file" name="filecsv" id="filecsv" class="form-control" required>
+                  </div>
+                  <div class="col-md-2">
+                    <button type="submit" class="btn btn-success w-100">UPLOAD</button>
+                  </div>
+                </form>
+              </div>
+              <div class="card-body">
+                    <a href="index.php?page=add_pro" class="btn btn-success mb-4">
+                      <i class="nav-icon bi bi-people">+Add Product</i></a>
+            </div>
+          </div>
                     <table class="table table-bordered">
                       <thead>
                         <tr>
@@ -49,6 +65,7 @@ $result = $con->query($sql);
                           <th>Product_Price</th>
                           <th>Product_Amound</th>
                           <th>Product_Status</th>
+                          <th>ตัวอย่างสินค้า</th>
                           <th>แก้ไขข้อมูล</th>
                           
                         </tr>
@@ -67,13 +84,14 @@ $result = $con->query($sql);
                           <td><?php echo $row['pro_price']?></td>
                             <td><?php echo $row['pro_amount']?></td>
                             <td><?php echo $row['pro_status']?></td>
+                            <td><img src="assets/pro_img/<?php echo $row ['image']?>" width="100"></td>
                             <td>
                               <!-- ใส่ปุ่มแก้ไขข้อมูล -->
                               <a href="index.php?page=edit_pro&pro_id=<?php 
                               echo $row['pro_id']?>" class="btn btn-info">
                                 <i class="bi bi-pencil-square"></i></a>
                                 <!-- ใส่ปุ่มลบข้อมูล -->
-                                <a href="index.php?page=del_pro&username=<?php 
+                                <a href="index.php?page=del_pro&pro_id=<?php 
                               echo $row['pro_id']?>" class="btn btn-danger"
                               onclick="return confirm('มึงแน่ใจหรอ')">
                                   <i class="bi bi-trash-fill"></i></a>
