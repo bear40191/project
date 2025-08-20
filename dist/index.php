@@ -3,6 +3,7 @@
 <!--begin::Head-->
 
 <head>
+  <link rel="shortcut icon" href="dist/assets/Cat Keqing Thinking.png" type="img/x-icon">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>AdminLTE v4 | Dashboard</title>
 
@@ -109,6 +110,14 @@
 
           case 'del_pro';
           include 'del_pro.php';
+          break;
+
+          case 'find_user';
+          include 'find_user.php';
+          break;
+
+          case 'find_pro';
+          include 'find_pro.php';
           break;
 
         }

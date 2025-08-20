@@ -1,34 +1,25 @@
 <?php
 require '../connect.php';
-$sql = "SELECT * from products";
+$keyword = $_POST['keyword'];
+$sql = "SELECT * from user where username like '%$keyword%' OR fullname like 
+'%$keyword%'";
 $result = $con->query($sql);
-
 ?>
 
-<main class="app-main">
-        <!--begin::App Content Header-->
+<!--begin::App Content Header-->
         <div class="app-content-header">
           <!--begin::Container-->
           <div class="container-fluid">
             <!--begin::Row-->
             <div class="row">
               <div class="col-sm-3">
-                <h3 class="mb-0">Product Tables</h3>
+                <h3 class="mb-0">users Tables</h3>
               </div>
-               <div class="col-sm-6">
-                <form action="index.php?page=find_pro" class="row" method="POST">
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control"name ="keyword" placeholder="กรอกสิ่งต้องการเพื่อค้นหา">
-                  </div>
-                  <div class="col-sm-2">
-                    <button class="btn btn-primary"><i class="bi bi-radioactive"></i></button>
-                  </div>
-                </form>
-              </div>
-              <div class="col-sm-3 ">
+              
+              <div class="col-sm-3">
                 <ol class="breadcrumb float-sm-end">
-                  <li class="breadcrumb-item"><a href="dashboard.php" form action ="index.php?page=dashboard">Home</a></li>
-                  <li class="breadcrumb-item active" aria-current="users_list">Product Tables</li>
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item active" aria-current="users_list">Users Tables</li>
                 </ol>
               </div>
             </div>
@@ -45,39 +36,23 @@ $result = $con->query($sql);
             <div class="row">
               <div class="col-md-15">
                 <div class="card mb-4">
-                  <div class="card-header bg-danger text-white">
-                    <h3 class="card-title">Product_list</h3>
+                  <div class="card-header bg-primary text-white">
+                    <h3 class="card-title">Users</h3>
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body">
-            <div class="row align-items-center">
-              <div class="col-md-10">
-                <form action="pro_csv.php" method="post" enctype="multipart/form-data" class="row align-items-center">
-                  <label for="filecsv" class="col-md-4 col-form-label">UPLOAD YOUR FILE</label>
-                  <div class="col-md-6">
-                    <input type="file" name="filecsv" id="filecsv" class="form-control" required>
-                  </div>
-                  <div class="col-md-2">
-                    <button type="submit" class="btn btn-success w-100">UPLOAD</button>
-                  </div>
-                </form>
-              </div>
-              <div class="card-body">
-                    <a href="index.php?page=add_pro" class="btn btn-success mb-4">
-                      <i class="nav-icon bi bi-people">+Add Product</i></a>
-            </div>
           </div>
+
                     <table class="table table-bordered">
                       <thead>
                         <tr>
                             <th>ลำดับที่</th>
-                            <th>Product_id</th>
-                          <th >Product_Name</th>
-                          <th>Product_Price</th>
-                          <th>Product_Amound</th>
-                          <th>Product_Status</th>
-                          <th>ตัวอย่างสินค้า</th>
-                          <th>แก้ไขข้อมูล</th>
+                          <th >Username</th>
+                          <th>fullname</th>
+                          <th>email</th>
+                          <th >Phone</th>
+                          <th>image</th>
+                          <th>Action</th>
                           
                         </tr>
                       </thead>  
@@ -90,20 +65,19 @@ $result = $con->query($sql);
                         ?>
                         <tr class="align-middle">
                           <td><?php echo $i ?></td>
-                          <td><?php echo $row['pro_id']?></td>
-                          <td><?php echo $row['pro_name']?></td>
-                          <td><?php echo $row['pro_price']?></td>
-                            <td><?php echo $row['pro_amount']?></td>
-                            <td><?php echo $row['pro_status']?></td>
-                            <td><img src="assets/pro_img/<?php echo $row ['image']?>" width="100"></td>
+                          <td><?php echo $row['Username']?></td>
+                          <td><?php echo $row['fullname']?></td>
+                            <td><?php echo $row['email']?></td>
+                            <td><?php echo $row['phone']?></td>
+                            <td><img src="assets/user_img/<?php echo $row ['image']?>" width="100"></td>
                             <td>
                               <!-- ใส่ปุ่มแก้ไขข้อมูล -->
-                              <a href="index.php?page=edit_pro&pro_id=<?php 
-                              echo $row['pro_id']?>" class="btn btn-info">
+                              <a href="index.php?page=edit_user&username=<?php 
+                              echo $row['Username']?>" class="btn btn-info">
                                 <i class="bi bi-pencil-square"></i></a>
                                 <!-- ใส่ปุ่มลบข้อมูล -->
-                                <a href="index.php?page=del_pro&pro_id=<?php 
-                              echo $row['pro_id']?>" class="btn btn-danger"
+                                <a href="index.php?page=del_user&username=<?php 
+                              echo $row['Username']?>" class="btn btn-danger"
                               onclick="return confirm('มึงแน่ใจหรอ')">
                                   <i class="bi bi-trash-fill"></i></a>
                             </td>
@@ -153,4 +127,3 @@ $result = $con->query($sql);
           <!--end::Container-->
         </div>
         <!--end::App Content-->
-      </main>

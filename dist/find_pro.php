@@ -1,13 +1,13 @@
 <?php
 require '../connect.php';
-$sql = "SELECT * from products";
+$keyword = $_POST['keyword'];
+$sql = "SELECT * from products where pro_id like '%$keyword%' OR pro_name like 
+'%$keyword%'";
 $result = $con->query($sql);
-
 ?>
 
-<main class="app-main">
-        <!--begin::App Content Header-->
-        <div class="app-content-header">
+
+ <div class="app-content-header">
           <!--begin::Container-->
           <div class="container-fluid">
             <!--begin::Row-->
@@ -15,7 +15,7 @@ $result = $con->query($sql);
               <div class="col-sm-3">
                 <h3 class="mb-0">Product Tables</h3>
               </div>
-               <div class="col-sm-6">
+              <div class="col-sm-6">
                 <form action="index.php?page=find_pro" class="row" method="POST">
                   <div class="col-sm-10">
                     <input type="text" class="form-control"name ="keyword" placeholder="กรอกสิ่งต้องการเพื่อค้นหา">
@@ -27,7 +27,7 @@ $result = $con->query($sql);
               </div>
               <div class="col-sm-3 ">
                 <ol class="breadcrumb float-sm-end">
-                  <li class="breadcrumb-item"><a href="dashboard.php" form action ="index.php?page=dashboard">Home</a></li>
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
                   <li class="breadcrumb-item active" aria-current="users_list">Product Tables</li>
                 </ol>
               </div>
@@ -153,4 +153,3 @@ $result = $con->query($sql);
           <!--end::Container-->
         </div>
         <!--end::App Content-->
-      </main>
